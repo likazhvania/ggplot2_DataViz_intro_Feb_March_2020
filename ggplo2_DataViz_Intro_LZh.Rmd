@@ -1,0 +1,366 @@
+---
+title: "შესავალი ggplot2 პაკეტის საფუძვლებსა და მონაცემთა ვიზუალიზაციაში "
+author: "ლიკა ჟვანია"
+date: "თებერვალი-მარტი 2020, GeoLab - ჯეოლაბი"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+  ioslides_presentation: default
+editor_options:
+  
+  chunk_output_type: inline
+---
+
+```{r eval=FALSE, include=FALSE}
+library(rmarkdown)
+render("ggplot2_DataViz_Intro_LZh.Rmd")
+```
+
+
+
+## შინაარსი
+
+
+მონაცემთა ვიზუალიზაციის ძირითადი პრინციპები
+
+ggplot2 პაკეტი
+
+პრაქტიკული სამუშაო
+
+
+
+
+## რაოდენობრივი ინფორმაციის ვიზუალური გამოსახვა - ედვარდ რ. ტაფტი
+
+The visual display of quantitat - “Most of all, the book, as a thing in itself, gave to me fresh new eyes                                           for the intellectual and aesthetic joy of visual evidence, visual                                          reasoning, and visual understanding." - Edward (Rolf) Tufte
+
+```{r echo=FALSE, out.width="50%", pressure1, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\ETufte.png")
+```
+
+## რაოდენობრივი ინფორმაციის ვიზუალური გამოსახვა
+```{r echo=FALSE, out.width="100%", tuftegraph, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\tuftegraph.jpg")
+```
+"წყარო:https://sites.psu.edu/julieludeman/2016/02/22/edward-tufte-the-da-vinci-of-data/
+
+
+## William Playfair (1759-1823)
+"Graphical methods of statistics"
+
+
+```{r echo=FALSE, out.width="70%", playfaircharts, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\playfaircharts.png")
+```
+
+წყარო: shorturl.at/brxBT
+
+
+## გრაფიკული გამოსახვის პრინციპები - ედვარდ ტაფტი
+
+გრაფიკული გამოსახვა უნდა უნდა პასუხობდეს შემდეგ პრინციპებს:
+
+•	აჩვენებდეს მონაცემებს
+
+•	მნახველს/მაყურებელს „აიძულებდეს/უბიძგებდეს" იფიქროს მონაცემებზე, და არა მეთოდოლოგიაზე, გრაფიკულ დიზაინზე, გრაფიკული პროდუქტის ტექნიკაზე და ა.შ.
+
+•	თავიდან აიცილოს მონაცემების სათქმელის დამახინჯება
+
+•	წარმოადგინოს დიდი ოდენობით მონაცემი მცირე სივრცეში
+
+•	დიდი მონაცემთა ნაკრები გახადოს შეკავშირებული
+
+•	წაახალისოს თვალი, მონაცემთა სხვადასხვა ნაწილების შესადარებლად
+
+•	გამოავლინოს მონაცემები დეტალების რამდენიმე დონეზე
+
+•	ემსახუროს მკაფიო მიზანს:  აღწერა, კვლევა/აღმოჩენა, შეჯამება, ცხრილების სახით წარმოდგენა, დეკორაცია
+
+•	ინტეგრირებული იყოს სტატისტიკურ და ვერბალურ აღწერილობასთან
+
+წყარო: The visual display of quantitat, Edward Tufte
+
+
+## A silly Theory means a silly graphic! - Edward Tufte
+```{r echo=FALSE, out.width="35%", sillygraph, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\sillygraph.gif")
+```
+
+წყარო: The visual display of quantitate – Edward Tufte
+
+ტაფტის თქმით, სტატისტიკური გრაფიკები (და ზოგადად სტატისტიკური გამოთვლები) იმდენად არის კარგი, რამდენადაც მასში ნაგულისხმევი შინაარსი. მცდარი ურთიერთკავშირები, ან აბსურდული მოდელები, ასევე მცირე/"უსუსური" მონაცემები შეუძლებელია გადმოიცეს გრაფიკების სახით, რაც არ უნდა ეფექტური გზით იყოს წარმოდგენილი.
+
+
+## Spurious Associations  - ყალბი ასოციაციები
+ყალბი ასოციაციები მიუთითებს იმ გარემოებაზე, რომ შესაძლოა რიგი მოვლენები ემთხვეოდეს ერთმანეთს, მაგრამ არ იყვნენ ერთმანეთთან კავშირში. დროითი მწკრივების მონაცემები წარმოადგენს მნიშვნელოვან წყაროს ყალბი ასოციაციებისთვის. 
+ Richard Harrison – Quantitative Geography/ About Quantitative Geography/The Use and Abuse of Statistics/Spurious Associations
+
+```{r echo=FALSE, out.width="85%", spuriousassociations1, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\spuriousassociations1.png")
+```
+
+წყარო:  http://tylervigen.com/spurious-correlations
+
+
+## ყალბი ასოციაციები
+ყალბ ასოციაციებს შორის ზოგიერთი მათგანი შესაძლოა მეტად "მაცდუნებელია". განსაკუთრებით მაშინ, როცა ისინი ეხმიანებიანწინასწარ შექმნილ წარმოდგენებს, წინასწარ შექმნილ აზრს ან შეხედულებეს. 
+
+```{r echo=FALSE, out.width="60%", spuriousassociations2, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\spuriousassociations2.jpg")
+```
+
+წყარო: Richard Harrison – Quantitative Geography/ About Quantitative Geography/The Use and Abuse of Statistics/Spurious Associations
+
+```{r echo=FALSE, out.width="60%", spuriousassociationsbbc, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\spuriousassociationsbbc.png")
+```
+
+წყარო: http://news.bbc.co.uk/2/hi/science/nature/4209956.stm
+
+
+## ყალბი ასოციაციები
+```{r echo=FALSE, out.width="100%", spuriousassociations3, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\spuriousassociations3.png")
+```
+
+წყარო:  http://tylervigen.com/spurious-correlations
+
+## ggplot2 პაკეტი
+წყარო: Hadley Wickham - ggplot2 / Elegant graphics for data analysis
+
+ggplot2 არის R-ის პაკეტი - სტატისტიკური/მონაცემთა გრაფიკების შესაქმნელად.
+
+მისი პროგრამული ენა დაფუძნებულია პაკეტ Graphics ენაზე (Wilkinson, 2005)
+
+მნიშვნელოვანი ელემენტები:
+
+x-y ღერძები(x-axis, y-axis)
+
+"გეომები"(geom)
+
+"ესთეტიკური" ატრიბუტები (aes())
+
+ლეგენდა (theme)
+
+```{r echo=FALSE, out.width="80%", ggplot2-cheatsheet01, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\ggplot2-cheatsheet01.png")
+```
+```{r echo=FALSE, out.width="80%", ggplot2-cheatsheet02, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\ggplot2-cheatsheet02.png")
+```
+
+წყარო: https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+
+## პრაქტიკული სამუშაო
+
+სამუშაო მისამართის განსაზღვრა
+
+```{}
+setwd()
+```
+```{}
+setwd("D:\\R\\R\\R_Introductory_Workshops_Geolab\\ggplot2")
+```
+
+პაკეტის ჩამოტვირთვა
+```{}
+install.packages("ggplot2")
+```
+
+ბიბლიოთეკის გამოძახება
+```{}
+library(ggplot2)
+```
+
+მონაცემთა ნაკრების შემოტანა. diamond dataset - შეიცავს ინფორმაციას ფასებისა და ხარისხის შესახებ 54 000 ჩანაწერზე; ხარისხობრივი ინფორმაცია: carat, cut, colour, clarity; ფიზიკური საზომები: depth, table, x, y, z
+```{}
+d <- ggplot(diamonds)
+d <- data.frame(diamonds)
+d <- diamonds
+d
+```
+
+შემთხვევითი შერჩევა
+
+```{}
+dsmall <- diamonds[sample(nrow(diamonds), 100), ]
+```
+
+## პრაქტიკული სამუშაო
+
+საბაზისო გამოყენება - x-y ღერძები და კოორდინატები 
+```{}
+ggplot(data = d, aes(x = carat, y = price)) + geom_point()
+```
+
+```{r echo=FALSE, out.width="50%", Rplot_01, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_01.png")
+```
+```{}
+ggplot() + geom_point(data = d, aes(x = carat, y = price))
+ggplot(d) + geom_point(aes(carat, price))
+```
+
+
+log() 
+
+```{}
+ggplot(data = d, aes(log(carat), log(price))) + geom_point()
+```
+
+```{r echo=FALSE, out.width="50%", Rplot_02, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_02.png")
+```
+
+ცვლადების კომბინაცია - წრფივი ურთიერთკავშირი მოცულობასა და წონას შორის
+
+```{}
+ggplot(data = d, aes(carat, x * y * z)) + geom_point()
+```
+```{r echo=FALSE, out.width="50%", Rplot_03, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_03.png")
+```
+
+
+## პრაქტიკული სამუშაო
+
+ფერი, ზომა, ფორმა და სხვა "ესთეტიური" ატრიბუტები - როგორც დამატებითი ინფორმაცია
+
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point(aes(colour = color)) # ფერები კატეგორიების საჩვენებლად
+```
+```{r echo=FALSE, out.width="50%", Rplot_04, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_04.png")
+```
+```{}
+ggplot(data = dsmall, aes(carat, price)) + geom_point(aes(colour = color))
+```
+```{r echo=FALSE, out.width="50%", Rplot_05, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_05.png")
+```
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point(aes(shape = cut)) # ფორმა კატეგორიების საჩვენებლად
+```
+```{r echo=FALSE, out.width="50%", Rplot_06, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_06.png")
+```
+```{}
+ggplot(data = dsmall, aes(carat, price)) + geom_point(aes(shape = cut))
+```
+```{r echo=FALSE, out.width="50%", Rplot_07, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_07.png")
+```
+```{}
+ggplot(data = dsmall, aes(carat, price)) + geom_point(aes(colour = color, size = 1)) # ზომა
+```
+```{r echo=FALSE, out.width="50%", Rplot_08, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_08.png")
+```
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point(alpha = 0.1)   # 1/10
+```                 
+```{r echo=FALSE, out.width="50%", Rplot_09, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_09.png")
+```
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point(alpha = 0.01)  # 1/100
+``` 
+```{r echo=FALSE, out.width="50%", Rplot_10, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_10.png")
+```
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point(alpha = 0.005) # 1/200
+```
+```{r echo=FALSE, out.width="50%", Rplot_11, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_11.png")
+```
+
+## პრაქტიკული სამუშაო 
+
+smoother
+
+```{}
+ggplot(data = d, aes(carat, price)) + geom_point() + geom_smooth()
+```
+```{r echo=FALSE, out.width="50%", Rplot_12, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_12.png")
+```
+
+ ```{}
+ggplot(data = dsmall, aes(carat, price)) + geom_point() + geom_smooth()
+```
+```{r echo=FALSE, out.width="50%", Rplot_13, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_13.png")
+```
+
+```{}
+ggplot(data = dsmall, aes(carat, price)) + geom_point() + geom_smooth(span = 0.2) # ტალღისეურობის კონტროლი "span'                                                                                     პარამეტრით (მეტისმეტად                                                                                            ტალღისებური 0 - და არც ისე                                                                                        ტალღისებური 1)
+``` 
+```{r echo=FALSE, out.width="50%", Rplot_14, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_14.png")
+```
+
+
+## პრაქტიკული სამუშაო
+
+facets (facet_grid&facet_wrap)
+
+ ```{}
+ggplot(data = d, aes(carat, price)) + geom_point() + 
+  facet_wrap(~cut)
+```
+```{r echo=FALSE, out.width="50%", Rplot_15, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_15.png")
+```
+
+
+## პრაქტიკული სამუშაო
+plot
+
+```{}
+dplot <- ggplot(data = d, aes(carat, price)) + geom_point(aes(colour = cut)) + facet_wrap(~cut)
+```
+```{}
+dplot
+```
+ლეგენდა
+```{}
+dplot_1 <- dplot + 
+  labs(title = "ბრილიანტის მაჩვენებლების შეფასება",
+       subtitle = "ბრილიანტის დამუშავების ხარისხი, კარატი და ფასი",
+       caption = "წყარო: ggplot2, ღია მონაცემთა ბაზა") + 
+  xlab("კარატი") + ylab("ფასი") +
+  theme(
+    plot.title = element_text(colour = "black", size = 14, face = "bold"),
+    plot.subtitle = element_text(colour = "black", size = 12),
+    plot.caption = element_text(colour = "black", size = 10, face = "italic", hjust = 1), 
+    strip.text = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(size = 8), 
+    axis.text.y = element_text(size = 8), 
+    legend.position = "bottom", 
+    legend.text = element_text(size = 12), 
+    legend.justification = 0
+  ) + 
+  scale_color_discrete(name = "დამუშავების ხარისხი"
+```
+```{}
+d$cut <- factor(d$cut, levels = c("Fair", "Good", "Very Good", "Premium", "Ideal"), 
+                labels = c("საშუალო", "კარგი", "ძალიან კარგი", "უმაღლესი", "იდეალური"))
+```
+```{}
+dplot_1
+```
+
+
+## პრაქტიკული სამუშაო
+
+პლოტის შენახვა
+```{}
+ggsave("dplot_1.png", width = 29.7, height = 21, units = "cm")
+```
+```{r echo=FALSE, out.width="50%", Rplot_complete, echo=FALSE}
+knitr::include_graphics("C:\\Users\\BAU 4\\Desktop\\R_Introductory_Workshops_Geolab\\Rplot_complete.png")
+```
+
+
